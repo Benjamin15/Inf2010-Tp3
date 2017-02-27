@@ -88,10 +88,10 @@ public class QuadraticSpacePerfectHashing<AnyType>
 	{
 		for (AnyType item : array)
 		{
-			if (items[getKey(item)] != null)
-				return false;
+			if (items[getKey(item)] != item)
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public String toString () {
