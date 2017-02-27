@@ -29,21 +29,49 @@ public class LinearSpacePerfectHashing<AnyType>
 	private void AllocateMemory(ArrayList<AnyType> array)
 	{
 		Random generator = new Random( System.nanoTime() );
-
+		ArrayList<AnyType> listTemp = new ArrayList<AnyType>();
+		int position;
+		
 		if(array == null || array.size() == 0)
 		{
-			// A completer
+			data = null;
 			return;
 		}
 		if(array.size() == 1)
 		{
 			a = b = 0;
-
-			// A completer
+			data = (QuadraticSpacePerfectHashing<AnyType>[]) new Object[1];
+			data[0] = (QuadraticSpacePerfectHashing<AnyType>) array.get(0);
 			return;
 		}
 
-		// A completer
+		data = new QuadraticSpacePerfectHashing[array.size()];
+		a = generator.nextInt(p);
+		b = generator.nextInt(p);
+
+		for (AnyType item : array)
+		{
+			if (item != null)
+			{
+				position = (((a * item.hashCode()) + b) % p ) % data.length;
+				if (data[position] == null) // Si la position de data est une case vide, on crée un hashage Quadratique
+				{
+					listTemp.add(item);
+					data[position] = new QuadraticSpacePerfectHashing<AnyType>();
+					data[position].SetArray(listTemp);
+				}
+				else
+				{
+					for (AnyType itemQuadratic : data[position].getItems()) // On met dans un arrayList les anciens element quadratique
+					{
+						if (itemQuadratic != null)
+							listTemp.add(itemQuadratic);
+					}
+					listTemp.add(item); // On rajoute le nouvel element
+					data[position].SetArray(listTemp);
+				}
+			}
+		}
 	}
 
 	public int Size()
@@ -60,31 +88,49 @@ public class LinearSpacePerfectHashing<AnyType>
 
 	public boolean containsKey(int key)
 	{
-		// A completer
-
+		int position = (((a * key) + b) % p ) % data.length;
+		if (data[position] == null)
+			return false;
+		else
+			return data[position].containsKey(key);
 	}
 	
 	public int getKey (AnyType x) {
-		// A completer
-		
+		return x.hashCode();	
 	}
 	
 	public boolean containsValue (AnyType x) {
-		// A completer
-
+		int position = (((a * x.hashCode()) + b) % p ) % data.length;
+		if (data[position] == null)
+			return false;
+		for (AnyType item : data[position].getItems())
+		{
+			if (item != null)
+				if (item.equals(x))
+					return true;
+		}
+		return false;
 	}
 	
 	public void remove (AnyType x) {
-		// A completer
-		
+		int position = (((a * x.hashCode()) + b) % p ) % data.length;
+		if (data[position] != null)
+			data[position].remove(x);
 	}
 
 	public String toString () {
 		String result = "";
-		
-		// A completer
-		
-		
+		for (QuadraticSpacePerfectHashing<AnyType> item : data)
+		{
+			if (item != null)
+			{
+				for (AnyType itemQuadratic : item.getItems())
+				{
+					if (itemQuadratic != null)
+						result += itemQuadratic.toString();
+				}
+			}
+		}
 		return result; 
 	}
 	

@@ -7,8 +7,8 @@ public class QuadraticSpacePerfectHashing<AnyType>
 {
 	static int p = 46337;
 
-	int a, b;
-	AnyType[] items;
+	private int a, b;
+	private AnyType[] items;
 
 	QuadraticSpacePerfectHashing()
 	{
@@ -34,7 +34,7 @@ public class QuadraticSpacePerfectHashing<AnyType>
 
 	public boolean containsKey(int key)
 	{
-		return (items[key] != null);
+		return (items[((a * key + b) %p) % Size()] != null);
 	}
 
 	public boolean containsValue(AnyType x )
@@ -78,7 +78,8 @@ public class QuadraticSpacePerfectHashing<AnyType>
 			b = generator.nextInt(p);
 			for (AnyType item : array)
 			{
-				items[getKey(item)] = item;
+				if (item != null)
+					items[getKey(item)] = item;
 			}
 		}
 		while( collisionExists( array ) );
@@ -99,10 +100,13 @@ public class QuadraticSpacePerfectHashing<AnyType>
 		
 		for (AnyType item : items)
 		{
-			result += "("+getKey(item) + ", "+item.toString() + "), ";
+			if (item != null)
+				result += "("+getKey(item) + ", "+item.toString() + "), ";
 		}
-		
-		
 		return result; 
+	}
+	public AnyType[] getItems()
+	{
+		return items;
 	}
 }

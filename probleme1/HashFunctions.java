@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class HashFunctions
 {
-    static int p = 46337;
+    static int p = 45000;
     
     public static void main(String[] args)
     {
@@ -43,8 +43,7 @@ public class HashFunctions
         System.out.println( 199 + " est present: " + e.containsValue(199) );
         System.out.println( 31 + " est present: " + e.containsValue(31) );
         System.out.println( 299 + " est present: " + e.containsValue(299) );
-        System.out.println();
-        
+        System.out.println( e.toString());
         
         // Tester la suppression
         e.remove(100);
@@ -65,7 +64,7 @@ public class HashFunctions
          * Exercice 2
          */
         // On cree un LinearSpacePerfectHashing et insere les memes donnees
-     /*   System.out.println( "LinearSpacePerfectHashing:");
+        System.out.println( "LinearSpacePerfectHashing:");
         System.out.println();
         
         LinearSpacePerfectHashing<Integer> pfhash = new LinearSpacePerfectHashing<Integer>( al );
@@ -76,41 +75,40 @@ public class HashFunctions
         System.out.println();
         
         // Verifie qu'il fonctionne comme prevu
-        System.out.println( 100 + " est present: " + pfhash.contains(100) );
-        System.out.println(  99 + " est present: " + pfhash.contains( 99) );
-        System.out.println( 200 + " est present: " + pfhash.contains(200) );
-        System.out.println( 199 + " est present: " + pfhash.contains(199) );
-        System.out.println( 300 + " est present: " + pfhash.contains(300) );
-        System.out.println( 299 + " est present: " + pfhash.contains(299) );
+        System.out.println( 100 + " est present: " + pfhash.containsValue(100) );
+        System.out.println(  99 + " est present: " + pfhash.containsValue( 99) );
+        System.out.println( 200 + " est present: " + pfhash.containsValue(200) );
+        System.out.println( 199 + " est present: " + pfhash.containsValue(199) );
+        System.out.println( 300 + " est present: " + pfhash.containsValue(300) );
+        System.out.println( 299 + " est present: " + pfhash.containsValue(299) );
         System.out.println();
         
         // Tester la suppression
         pfhash.remove(100);
-        System.out.println( 100 + " est present: " + pfhash.contains(100) );
+        System.out.println( 100 + " est present: " + pfhash.containsValue(100) );
         pfhash.remove(99);
-        System.out.println(  99 + " est present: " + pfhash.contains( 99) );
+        System.out.println(  99 + " est present: " + pfhash.containsValue( 99) );
         pfhash.remove(200);
-        System.out.println( 200 + " est present: " + pfhash.contains(200) );
+        System.out.println( 200 + " est present: " + pfhash.containsValue(200) );
         pfhash.remove(199);
-        System.out.println( 199 + " est present: " + pfhash.contains(199) );
+        System.out.println( 199 + " est present: " + pfhash.containsValue(199) );
         pfhash.remove(300);
-        System.out.println( 300 + " est present: " + pfhash.contains(300) );
+        System.out.println( 300 + " est present: " + pfhash.containsValue(300) );
         pfhash.remove(299);
-        System.out.println( 299 + " est present: " + pfhash.contains(299) );
+        System.out.println( 299 + " est present: " + pfhash.containsValue(299) );
         System.out.println();
-        */
         /**
          * Question 1 (confirmation des resultats de Exercice 2)
          */
         // Effectues quelques tests aleatoires pour verifier les proprietes de taille
-       /* pfhash = new LinearSpacePerfectHashing<Integer>();
+        pfhash = new LinearSpacePerfectHashing<Integer>();
         System.out.println("Tests aleatoires");
         
         for(int i=0, nbElements = 10; i<40; ++i, nbElements += 10)
         {
             pfhash.SetArray( randomIntegers( nbElements ) );
             System.out.println( nbElements + "\t" + pfhash.Size() );
-        }*/
+        }
     }
     
     /**
@@ -118,11 +116,27 @@ public class HashFunctions
      */
     public static ArrayList<Integer> randomIntegers(int length)
     {
-        // A complèter
-        
-        
-        
-        return null;
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	Random generator = new Random( System.nanoTime() );
+    	int nbAleatoire = 0;
+        for (int i = 0; i < length ; i++)
+        {
+        	nbAleatoire = generator.nextInt(p);
+        	if (numberExist(nbAleatoire, list) && list.size() != 0)
+        		i--;
+        	else
+        		list.add(nbAleatoire);
+        }
+        return list;
+    }
+    public static boolean numberExist(int number, ArrayList<Integer> list)
+    {
+    	for (Integer x : list)
+    	{
+    		if (x == number)
+    			return true;
+    	}
+    	return false;
     }
 }
 
