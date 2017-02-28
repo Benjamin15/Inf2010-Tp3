@@ -157,17 +157,16 @@ public class LinearSpacePerfectHashing<AnyType>
 	 */
 	public String toString () {
 		String result = "";
-		for (QuadraticSpacePerfectHashing<AnyType> item : data)
+		String value = "";
+		for (int i = 0 ; i < data.length; i++)
 		{
-			if (item != null)
+			if (data[i] != null)
 			{
-				for (AnyType itemQuadratic : item.getItems())
-				{
-					if (itemQuadratic != null)
-						result += itemQuadratic.toString();
-				}
+				value = data[i].toString().substring(0, data[i].toString().length() - 2);
+				result += "[ "+i + " : " + value + "],";
 			}
 		}
+		result = result.substring(0, result.length() - 1);
 		return result; 
 	}
 	

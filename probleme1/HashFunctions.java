@@ -1,3 +1,4 @@
+
 package probleme1;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class HashFunctions
         System.out.println( 300 + " est present: " + pfhash.containsValue(300) );
         System.out.println( 299 + " est present: " + pfhash.containsValue(299) );
         System.out.println();
-        
+        System.out.println(pfhash.toString());
         // Tester la suppression
         pfhash.remove(100);
         System.out.println( 100 + " est present: " + pfhash.containsValue(100) );
