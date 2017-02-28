@@ -13,8 +13,6 @@ public class HashMapTest
        mhmap.put("carotte", "2.5$");
        
        System.out.println( mhmap.get("concombre") );
-       System.out.println( mhmap.get("carotte") );
-       
+       System.out.println( mhmap.get("carotte") );   
    }
-
 }

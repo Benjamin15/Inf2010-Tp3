@@ -7,8 +7,8 @@ import java.util.Random;
 public class DoubleHashingTable<AnyType>   {
 
 	
-	static int DEFAULT_TABLE_SIZE  = 13;
-	static int DEFAULT_R  = 11;
+	static int DEFAULT_TABLE_SIZE = 13;
+	static int DEFAULT_R = 11;
 	private int currentSize;
 	private int R;
 	EntryPair<AnyType>[] items;
@@ -29,7 +29,7 @@ public class DoubleHashingTable<AnyType>   {
 	{
 		currentSize = 0;
 		for(int i = 0; i < items.length; i++ )
-	      items[i] = null;
+			items[i] = null;
 	}
 
 	/**
@@ -40,12 +40,9 @@ public class DoubleHashingTable<AnyType>   {
 	private int myhash(AnyType x)
 	{
 	   int hashVal = x.hashCode();
-	   
 	   hashVal %= items.length;
-	   
 	   if(hashVal < 0)
 	      hashVal += items.length;
-	   
 	   return hashVal;
 	}
 
@@ -105,7 +102,6 @@ public class DoubleHashingTable<AnyType>   {
 	{
 	   int offset = 0;
 	   int currentPos = myhash(x);
-			
 	   while(items[currentPos] != null && !items[currentPos].element.equals(x))
 	   {
 	      currentPos = (x.hashCode() % items.length) + (offset++ *  (R - (x.hashCode() % R) )) ;  //currentPos =  H1(x) + i H2(x) 
@@ -122,11 +118,9 @@ public class DoubleHashingTable<AnyType>   {
 	public void insert(AnyType x)
 	{
 	   int currentPos = findPos(x);
-	   
 	   if(isActive( currentPos ))
 	      return;
 	   items[currentPos] = new EntryPair<AnyType>(x, true);
-	   
 	   if(++currentSize > items.length / 2)
 	      rehash();
 	}
@@ -139,7 +133,6 @@ public class DoubleHashingTable<AnyType>   {
 	public void remove(AnyType x)
 	{
 	   int currentPos = findPos(x);
-	   
 	   if(isActive(currentPos))
 	      items[currentPos].isActive = false;
 	}
@@ -163,10 +156,8 @@ public class DoubleHashingTable<AnyType>   {
 	{
 		R = items.length;  // On reprend la valeur de l'ancienne valeur de N, qui est forcément en nombre premier
 		EntryPair<AnyType>[] oldArray = items;
-		
 		allocateArray(nextPrime(2 * oldArray.length));
 		currentSize = 0;
-
 	   for(int i = 0; i < oldArray.length; i++)
 	      if(oldArray[i] != null && oldArray[i].isActive)
 	         insert(oldArray[i].element);
@@ -181,14 +172,11 @@ public class DoubleHashingTable<AnyType>   {
 	{
 	   if(n == 2 || n == 3)
 	      return true;
-
 	   if(n == 1 || n % 2 == 0)
 	      return false;
-
 	   for(int i = 3; i * i <= n; i += 2 )
 	      if(n % i == 0)
 	         return false;
-
 	   return true;
 	}
 
@@ -201,7 +189,6 @@ public class DoubleHashingTable<AnyType>   {
 	{
 	   if(n % 2 == 0)
 	      n++;
-
 	   for( ; !isPrime( n ); n += 2);
 	   return n;
 	}

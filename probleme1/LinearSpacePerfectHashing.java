@@ -20,18 +20,23 @@ public class LinearSpacePerfectHashing<AnyType>
 		AllocateMemory(array);
 	}
 
+	/**
+	 * Methode permettant de mettre à jour une nouvelle table de hashage
+	 * @param array
+	 */
 	public void SetArray(ArrayList<AnyType> array)
 	{
 		AllocateMemory(array);
 	}
 
+	/**
+	 * Methode permettant d'allouer la mémoire convenablement, et de placer l'array dans la table de hashage
+	 * @param array
+	 */
 	@SuppressWarnings("unchecked")
 	private void AllocateMemory(ArrayList<AnyType> array)
 	{
 		Random generator = new Random( System.nanoTime() );
-		ArrayList<AnyType> listTemp = new ArrayList<AnyType>();
-		int position;
-		
 		if(array == null || array.size() == 0)
 		{
 			data = null;
@@ -44,36 +49,18 @@ public class LinearSpacePerfectHashing<AnyType>
 			data[0] = (QuadraticSpacePerfectHashing<AnyType>) array.get(0);
 			return;
 		}
-
 		data = new QuadraticSpacePerfectHashing[array.size()];
 		a = generator.nextInt(p);
 		b = generator.nextInt(p);
-
 		for (AnyType item : array)
-		{
 			if (item != null)
-			{
-				position = (((a * item.hashCode()) + b) % p ) % data.length;
-				if (data[position] == null) // Si la position de data est une case vide, on crée un hashage Quadratique
-				{
-					listTemp.add(item);
-					data[position] = new QuadraticSpacePerfectHashing<AnyType>();
-					data[position].SetArray(listTemp);
-				}
-				else
-				{
-					for (AnyType itemQuadratic : data[position].getItems()) // On met dans un arrayList les anciens element quadratique
-					{
-						if (itemQuadratic != null)
-							listTemp.add(itemQuadratic);
-					}
-					listTemp.add(item); // On rajoute le nouvel element
-					data[position].SetArray(listTemp);
-				}
-			}
-		}
+				addElement(item);
 	}
 
+	/**
+	 * Permet de calculer la taille de la table de hashage. Ne prend pas en compte les elements null
+	 * @return
+	 */
 	public int Size()
 	{
 		if( data == null ) return 0;
@@ -86,6 +73,11 @@ public class LinearSpacePerfectHashing<AnyType>
 		return size;
 	}
 
+	/**
+	 * Methode permet de voir s'il existe une valeur pour la clé donné en paramètre
+	 * @param key
+	 * @return
+	 */
 	public boolean containsKey(int key)
 	{
 		int position = (((a * key) + b) % p ) % data.length;
@@ -95,12 +87,22 @@ public class LinearSpacePerfectHashing<AnyType>
 			return data[position].containsKey(key);
 	}
 	
+	/**
+	 * Methode permettant d'obtenir la clé d'un element
+	 * @param x
+	 * @return
+	 */
 	public int getKey (AnyType x) {
-		return x.hashCode();	
+		return (((a * x.hashCode()) + b) % p ) % data.length;	
 	}
 	
+	/**
+	 * Methode permettant de voir si la table de hashage contient un element x
+	 * @param x
+	 * @return
+	 */
 	public boolean containsValue (AnyType x) {
-		int position = (((a * x.hashCode()) + b) % p ) % data.length;
+		int position = getKey(x);
 		if (data[position] == null)
 			return false;
 		for (AnyType item : data[position].getItems())
@@ -111,13 +113,48 @@ public class LinearSpacePerfectHashing<AnyType>
 		}
 		return false;
 	}
-	
+	/**
+	 * Methode permettant de supprimer un élément donné en paramètre.
+	 * @param x
+	 */
 	public void remove (AnyType x) {
-		int position = (((a * x.hashCode()) + b) % p ) % data.length;
+		int position = getKey(x);
 		if (data[position] != null)
 			data[position].remove(x);
 	}
 
+	/**
+	 * Permet d'ajouter un element à la table de hashage
+	 * @param item
+	 */
+	private void addElement(AnyType item)
+	{
+		int position = getKey(item);
+		ArrayList<AnyType> listTemp = new ArrayList<AnyType>();
+		if (data[position] == null) // Si la position de data est une case vide, on crée un hashage Quadratique
+		{
+			listTemp.add(item);
+			data[position] = new QuadraticSpacePerfectHashing<AnyType>();
+			data[position].SetArray(listTemp);
+		}
+		else
+		{
+			for (AnyType itemQuadratic : data[position].getItems()) // On met dans un arrayList les anciens element quadratique
+			{
+				if (itemQuadratic != null)
+					listTemp.add(itemQuadratic);
+			}
+			listTemp.add(item); // On rajoute le nouvel element
+			data[position].SetArray(listTemp);
+		}
+	}
+	
+	
+	
+	/**
+	 * affiche le contenu de la table de hashage
+	 * return String
+	 */
 	public String toString () {
 		String result = "";
 		for (QuadraticSpacePerfectHashing<AnyType> item : data)

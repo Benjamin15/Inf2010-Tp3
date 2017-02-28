@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class HashFunctions
 {
-    static int p = 45000;
+    static int p = 46337;
     
     public static void main(String[] args)
     {
@@ -43,7 +43,7 @@ public class HashFunctions
         System.out.println( 199 + " est present: " + e.containsValue(199) );
         System.out.println( 31 + " est present: " + e.containsValue(31) );
         System.out.println( 299 + " est present: " + e.containsValue(299) );
-        System.out.println( e.toString());
+        System.out.println();
         
         // Tester la suppression
         e.remove(100);
