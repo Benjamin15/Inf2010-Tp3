@@ -1,9 +1,5 @@
 package probleme2;
 
-import java.util.ArrayList;
-import java.util.Map.Entry;
-import java.util.Random;
-
 public class DoubleHashingTable<AnyType>   {
 
 	
@@ -228,8 +224,4 @@ public class DoubleHashingTable<AnyType>   {
             isActive = active;
         }
     }
-	
-	
-	
-	
 }
